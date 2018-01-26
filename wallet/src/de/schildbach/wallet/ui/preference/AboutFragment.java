@@ -21,7 +21,7 @@ import org.bitcoinj.core.VersionMessage;
 
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.WalletApplication;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +30,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import de.schildbach.wallet.Constants;
+import de.schildbach.wallet.WalletApplication;
+import se.btcx.wallet.R;
 
 /**
  * @author Andreas Schildbach

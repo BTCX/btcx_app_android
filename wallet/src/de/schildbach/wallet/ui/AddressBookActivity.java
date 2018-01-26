@@ -30,7 +30,7 @@ import com.google.common.collect.Iterables;
 
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.util.ViewPagerTabs;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -142,8 +142,8 @@ public final class AddressBookActivity extends AbstractWalletActivity {
         private final Fragment left;
         private final Fragment right;
 
-        private FragmentTransaction currentTransaction = null;
-        private Fragment currentPrimaryItem = null;
+		private FragmentTransaction currentTransaction = null;
+		private Fragment currentPrimaryItem = null;
 
         public TwoFragmentAdapter(final FragmentManager fragmentManager, final Fragment left, final Fragment right) {
             this.fragmentManager = fragmentManager;
@@ -151,32 +151,36 @@ public final class AddressBookActivity extends AbstractWalletActivity {
             this.right = right;
         }
 
-        @Override
-        public int getCount() {
-            return 2;
-        }
+		@Override
+		public int getCount()
+		{
+			return 2;
+		}
 
-        @Override
-        public Object instantiateItem(final ViewGroup container, final int position) {
-            if (currentTransaction == null)
-                currentTransaction = fragmentManager.beginTransaction();
+		@Override
+		public Object instantiateItem(final ViewGroup container, final int position)
+		{
+			if (currentTransaction == null)
+				currentTransaction = fragmentManager.beginTransaction();
 
-            final String tag = (position == 0) ? TAG_LEFT : TAG_RIGHT;
-            final Fragment fragment = (position == 0) ? left : right;
-            currentTransaction.add(container.getId(), fragment, tag);
+			final String tag = (position == 0) ? TAG_LEFT : TAG_RIGHT;
+			final Fragment fragment = (position == 0) ? left : right;
+			currentTransaction.add(container.getId(), fragment, tag);
 
-            if (fragment != currentPrimaryItem) {
-                fragment.setMenuVisibility(false);
-                fragment.setUserVisibleHint(false);
-            }
+			if (fragment != currentPrimaryItem)
+			{
+				fragment.setMenuVisibility(false);
+				fragment.setUserVisibleHint(false);
+			}
 
-            return fragment;
-        }
+			return fragment;
+		}
 
-        @Override
-        public void destroyItem(final ViewGroup container, final int position, final Object object) {
-            throw new UnsupportedOperationException();
-        }
+		@Override
+		public void destroyItem(final ViewGroup container, final int position, final Object object)
+		{
+			throw new UnsupportedOperationException();
+		}
 
         @Override
         public void setPrimaryItem(final ViewGroup container, final int position, final Object object) {

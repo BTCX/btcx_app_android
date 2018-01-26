@@ -19,7 +19,7 @@ package de.schildbach.wallet.ui;
 
 import javax.annotation.Nullable;
 
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -84,8 +84,8 @@ public class DialogBuilder extends AlertDialog.Builder {
             titleView.setText(title);
         }
 
-        return this;
-    }
+		return this;
+	}
 
     @Override
     public DialogBuilder setTitle(final int titleResId) {

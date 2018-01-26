@@ -22,8 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -51,7 +49,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.params.KeyParameter;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
 import de.schildbach.wallet.Configuration;
@@ -82,7 +79,7 @@ import de.schildbach.wallet.ui.TransactionsAdapter;
 import de.schildbach.wallet.util.Bluetooth;
 import de.schildbach.wallet.util.Nfc;
 import de.schildbach.wallet.util.WalletUtils;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -1465,14 +1462,14 @@ public final class SendCoinsFragment extends Fragment {
     }
 
     private void requestPaymentRequest() {
-        final String paymentRequestHost;
+        final String host;
         if (!Bluetooth.isBluetoothUrl(paymentIntent.paymentRequestUrl))
-            paymentRequestHost = Uri.parse(paymentIntent.paymentRequestUrl).getHost();
+            host = Uri.parse(paymentIntent.paymentRequestUrl).getHost();
         else
-            paymentRequestHost = Bluetooth.decompressMac(Bluetooth.getBluetoothMac(paymentIntent.paymentRequestUrl));
+            host = Bluetooth.decompressMac(Bluetooth.getBluetoothMac(paymentIntent.paymentRequestUrl));
 
         ProgressDialogFragment.showProgress(fragmentManager,
-                getString(R.string.send_coins_fragment_request_payment_request_progress, paymentRequestHost));
+                getString(R.string.send_coins_fragment_request_payment_request_progress, host));
         setState(State.REQUEST_PAYMENT_REQUEST);
 
         final RequestPaymentRequestTask.ResultCallback callback = new RequestPaymentRequestTask.ResultCallback() {
@@ -1487,18 +1484,18 @@ public final class SendCoinsFragment extends Fragment {
                     updateView();
                     handler.post(dryrunRunnable);
                 } else {
-                    final List<String> reasons = new LinkedList<>();
+                    final StringBuilder reasons = new StringBuilder();
                     if (!SendCoinsFragment.this.paymentIntent.equalsAddress(paymentIntent))
-                        reasons.add("address");
+                        reasons.append("address");
                     if (!SendCoinsFragment.this.paymentIntent.equalsAmount(paymentIntent))
-                        reasons.add("amount");
-                    if (reasons.isEmpty())
-                        reasons.add("unknown");
+                        reasons.append(reasons.length() == 0 ? "" : ", ").append("amount");
+                    if (reasons.length() == 0)
+                        reasons.append("unknown");
 
                     final DialogBuilder dialog = DialogBuilder.warn(activity,
                             R.string.send_coins_fragment_request_payment_request_failed_title);
-                    dialog.setMessage(getString(R.string.send_coins_fragment_request_payment_request_failed_message,
-                            paymentRequestHost, Joiner.on(", ").join(reasons)));
+                    dialog.setMessage(getString(R.string.send_coins_fragment_request_payment_request_wrong_signature)
+                            + "\n\n" + reasons);
                     dialog.singleDismissButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {

@@ -99,7 +99,7 @@ public class Crypto {
 
     /**
      * Get password and generate key and iv.
-     * 
+     *
      * @param password
      *            The password to use in key generation
      * @param salt
@@ -117,7 +117,7 @@ public class Crypto {
 
     /**
      * Password based encryption using AES - CBC 256 bits.
-     * 
+     *
      * @param plainText
      *            The text to encrypt
      * @param password
@@ -133,7 +133,7 @@ public class Crypto {
 
     /**
      * Password based encryption using AES - CBC 256 bits.
-     * 
+     *
      * @param plainTextAsBytes
      *            The bytes to encrypt
      * @param password
@@ -152,7 +152,7 @@ public class Crypto {
 
     /**
      * Password based encryption using AES - CBC 256 bits.
-     * 
+     *
      * @param plainBytes
      *            The bytes to encrypt
      * @param password
@@ -186,7 +186,7 @@ public class Crypto {
 
     /**
      * Decrypt text previously encrypted with this class.
-     * 
+     *
      * @param textToDecode
      *            The code to decrypt
      * @param password
@@ -202,7 +202,7 @@ public class Crypto {
 
     /**
      * Decrypt bytes previously encrypted with this class.
-     * 
+     *
      * @param textToDecode
      *            The code to decrypt
      * @param password
@@ -232,7 +232,7 @@ public class Crypto {
 
     /**
      * Decrypt bytes previously encrypted with this class.
-     * 
+     *
      * @param bytesToDecode
      *            The bytes to decrypt
      * @param passwordbThe

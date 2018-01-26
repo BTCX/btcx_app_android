@@ -43,7 +43,7 @@ import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.WalletApplication;
 import de.schildbach.wallet.util.Crypto;
 import de.schildbach.wallet.util.Iso8601Format;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -165,89 +165,105 @@ public class BackupWalletDialogFragment extends DialogFragment {
             }
         });
 
-        return dialog;
-    }
+		return dialog;
+	}
 
-    @Override
-    public void onDismiss(final DialogInterface dialog) {
-        this.dialog = null;
+	@Override
+	public void onDismiss(final DialogInterface dialog)
+	{
+		this.dialog = null;
 
-        passwordView.removeTextChangedListener(textWatcher);
-        passwordAgainView.removeTextChangedListener(textWatcher);
+		passwordView.removeTextChangedListener(textWatcher);
+		passwordAgainView.removeTextChangedListener(textWatcher);
 
-        showView.setOnCheckedChangeListener(null);
+		showView.setOnCheckedChangeListener(null);
 
-        wipePasswords();
+		wipePasswords();
 
-        super.onDismiss(dialog);
-    }
+		super.onDismiss(dialog);
+	}
 
-    private void handleGo() {
-        final String password = passwordView.getText().toString().trim();
-        final String passwordAgain = passwordAgainView.getText().toString().trim();
+	private void handleGo()
+	{
+		final String password = passwordView.getText().toString().trim();
+		final String passwordAgain = passwordAgainView.getText().toString().trim();
 
-        if (passwordAgain.equals(password)) {
-            passwordView.setText(null); // get rid of it asap
-            passwordAgainView.setText(null);
+		if (passwordAgain.equals(password))
+		{
+			passwordView.setText(null); // get rid of it asap
+			passwordAgainView.setText(null);
 
-            backupWallet(password);
+			backupWallet(password);
 
-            dismiss();
+			dismiss();
 
-            application.getConfiguration().disarmBackupReminder();
-        } else {
-            passwordMismatchView.setVisibility(View.VISIBLE);
-        }
-    }
+			application.getConfiguration().disarmBackupReminder();
+		}
+		else
+		{
+			passwordMismatchView.setVisibility(View.VISIBLE);
+		}
+	}
 
-    private void wipePasswords() {
-        passwordView.setText(null);
-    }
+	private void wipePasswords()
+	{
+		passwordView.setText(null);
+	}
 
-    private void updateView() {
-        if (dialog == null)
-            return;
+	private void updateView()
+	{
+		if (dialog == null)
+			return;
 
-        final int passwordLength = passwordView.getText().length();
-        passwordStrengthView.setVisibility(passwordLength > 0 ? View.VISIBLE : View.INVISIBLE);
-        if (passwordLength < 6) {
-            passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_weak);
-            passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_weak));
-        } else if (passwordLength < 8) {
-            passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_fair);
-            passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_fair));
-        } else if (passwordLength < 10) {
-            passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_good);
-            passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_less_significant));
-        } else {
-            passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_strong);
-            passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_strong));
-        }
+		final int passwordLength = passwordView.getText().length();
+		passwordStrengthView.setVisibility(passwordLength > 0 ? View.VISIBLE : View.INVISIBLE);
+		if (passwordLength < 6)
+		{
+			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_weak);
+			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_weak));
+		}
+		else if (passwordLength < 8)
+		{
+			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_fair);
+			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_fair));
+		}
+		else if (passwordLength < 10)
+		{
+			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_good);
+			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_less_significant));
+		}
+		else
+		{
+			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_strong);
+			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_strong));
+		}
 
-        final boolean hasPassword = !passwordView.getText().toString().trim().isEmpty();
-        final boolean hasPasswordAgain = !passwordAgainView.getText().toString().trim().isEmpty();
+		final boolean hasPassword = !passwordView.getText().toString().trim().isEmpty();
+		final boolean hasPasswordAgain = !passwordAgainView.getText().toString().trim().isEmpty();
 
-        positiveButton.setEnabled(hasPassword && hasPasswordAgain);
-    }
+		positiveButton.setEnabled(hasPassword && hasPasswordAgain);
+	}
 
-    private void backupWallet(final String password) {
-        final File file = determineBackupFile();
+	private void backupWallet(final String password)
+	{
+		final File file = determineBackupFile();
 
-        final Protos.Wallet walletProto = new WalletProtobufSerializer().walletToProto(wallet);
+		final Protos.Wallet walletProto = new WalletProtobufSerializer().walletToProto(wallet);
 
-        Writer cipherOut = null;
+		Writer cipherOut = null;
 
-        try {
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            walletProto.writeTo(baos);
-            baos.close();
-            final byte[] plainBytes = baos.toByteArray();
+		try
+		{
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			walletProto.writeTo(baos);
+			baos.close();
+			final byte[] plainBytes = baos.toByteArray();
 
-            cipherOut = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
-            cipherOut.write(Crypto.encrypt(plainBytes, password.toCharArray()));
-            cipherOut.flush();
+			cipherOut = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+			cipherOut.write(Crypto.encrypt(plainBytes, password.toCharArray()));
+			cipherOut.flush();
 
-            log.info("backed up wallet to: '" + file + "'");
+			log.info("backed up wallet to: '" + file + "'");
 
             ArchiveBackupDialogFragment.show(getFragmentManager(), file);
         } catch (final IOException x) {
@@ -268,24 +284,25 @@ public class BackupWalletDialogFragment extends DialogFragment {
         }
     }
 
-    private File determineBackupFile() {
-        Constants.Files.EXTERNAL_WALLET_BACKUP_DIR.mkdirs();
-        checkState(Constants.Files.EXTERNAL_WALLET_BACKUP_DIR.isDirectory(), "%s is not a directory",
-                Constants.Files.EXTERNAL_WALLET_BACKUP_DIR);
+	private File determineBackupFile()
+	{
+		Constants.Files.EXTERNAL_WALLET_BACKUP_DIR.mkdirs();
+		checkState(Constants.Files.EXTERNAL_WALLET_BACKUP_DIR.isDirectory(), "%s is not a directory", Constants.Files.EXTERNAL_WALLET_BACKUP_DIR);
 
-        final DateFormat dateFormat = Iso8601Format.newDateFormat();
-        dateFormat.setTimeZone(TimeZone.getDefault());
+		final DateFormat dateFormat = Iso8601Format.newDateFormat();
+		dateFormat.setTimeZone(TimeZone.getDefault());
 
-        for (int i = 0; true; i++) {
-            final StringBuilder filename = new StringBuilder(Constants.Files.EXTERNAL_WALLET_BACKUP);
-            filename.append('-');
-            filename.append(dateFormat.format(new Date()));
-            if (i > 0)
-                filename.append(" (").append(i).append(')');
+		for (int i = 0; true; i++)
+		{
+			final StringBuilder filename = new StringBuilder(Constants.Files.EXTERNAL_WALLET_BACKUP);
+			filename.append('-');
+			filename.append(dateFormat.format(new Date()));
+			if (i > 0)
+				filename.append(" (").append(i).append(')');
 
-            final File file = new File(Constants.Files.EXTERNAL_WALLET_BACKUP_DIR, filename.toString());
-            if (!file.exists())
-                return file;
-        }
-    }
+			final File file = new File(Constants.Files.EXTERNAL_WALLET_BACKUP_DIR, filename.toString());
+			if (!file.exists())
+				return file;
+		}
+	}
 }

@@ -32,7 +32,7 @@ import de.schildbach.wallet.data.ExchangeRate;
 import de.schildbach.wallet.data.ExchangeRatesProvider;
 import de.schildbach.wallet.service.BlockchainState;
 import de.schildbach.wallet.service.BlockchainStateLoader;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -166,16 +166,17 @@ public final class ExchangeRatesFragment extends Fragment implements OnSharedPre
                     query = Strings.emptyToNull(newText.trim());
                     getLoaderManager().restartLoader(ID_RATE_LOADER, null, rateLoaderCallbacks);
 
-                    return true;
-                }
+				return true;
+			}
 
-                @Override
-                public boolean onQueryTextSubmit(final String query) {
-                    searchView.clearFocus();
+			@Override
+			public boolean onQueryTextSubmit(final String query)
+			{
+				searchView.clearFocus();
 
-                    return true;
-                }
-            });
+				return true;
+			}
+		});
 
             // Workaround for not being able to style the SearchView
             final int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,

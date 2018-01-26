@@ -39,7 +39,7 @@ import com.squareup.okhttp.Response;
 
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.util.Bluetooth;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -184,69 +184,91 @@ public abstract class DirectPaymentTask {
                         is = new DataInputStream(socket.getInputStream());
                         os = new DataOutputStream(socket.getOutputStream());
 
-                        payment.writeDelimitedTo(os);
-                        os.flush();
+						payment.writeDelimitedTo(os);
+						os.flush();
 
-                        log.info("tx sent via bluetooth");
+						log.info("tx sent via bluetooth");
 
-                        final Protos.PaymentACK paymentAck = Protos.PaymentACK.parseDelimitedFrom(is);
+						final Protos.PaymentACK paymentAck = Protos.PaymentACK.parseDelimitedFrom(is);
 
-                        final boolean ack = "ack".equals(PaymentProtocol.parsePaymentAck(paymentAck).getMemo());
+						final boolean ack = "ack".equals(PaymentProtocol.parsePaymentAck(paymentAck).getMemo());
 
-                        log.info("received {} via bluetooth", ack ? "ack" : "nack");
+						log.info("received {} via bluetooth", ack ? "ack" : "nack");
 
-                        onResult(ack);
-                    } catch (final IOException x) {
-                        log.info("problem sending", x);
+						onResult(ack);
+					}
+					catch (final IOException x)
+					{
+						log.info("problem sending", x);
 
-                        onFail(R.string.error_io, x.getMessage());
-                    } finally {
-                        if (os != null) {
-                            try {
-                                os.close();
-                            } catch (final IOException x) {
-                                // swallow
-                            }
-                        }
+						onFail(R.string.error_io, x.getMessage());
+					}
+					finally
+					{
+						if (os != null)
+						{
+							try
+							{
+								os.close();
+							}
+							catch (final IOException x)
+							{
+								// swallow
+							}
+						}
 
-                        if (is != null) {
-                            try {
-                                is.close();
-                            } catch (final IOException x) {
-                                // swallow
-                            }
-                        }
+						if (is != null)
+						{
+							try
+							{
+								is.close();
+							}
+							catch (final IOException x)
+							{
+								// swallow
+							}
+						}
 
-                        if (socket != null) {
-                            try {
-                                socket.close();
-                            } catch (final IOException x) {
-                                // swallow
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
+						if (socket != null)
+						{
+							try
+							{
+								socket.close();
+							}
+							catch (final IOException x)
+							{
+								// swallow
+							}
+						}
+					}
+				}
+			});
+		}
+	}
 
-    public abstract void send(Payment payment);
+	public abstract void send(Payment payment);
 
-    protected void onResult(final boolean ack) {
-        callbackHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                resultCallback.onResult(ack);
-            }
-        });
-    }
+	protected void onResult(final boolean ack)
+	{
+		callbackHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				resultCallback.onResult(ack);
+			}
+		});
+	}
 
-    protected void onFail(final int messageResId, final Object... messageArgs) {
-        callbackHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                resultCallback.onFail(messageResId, messageArgs);
-            }
-        });
-    }
+	protected void onFail(final int messageResId, final Object... messageArgs)
+	{
+		callbackHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				resultCallback.onFail(messageResId, messageArgs);
+			}
+		});
+	}
 }

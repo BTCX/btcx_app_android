@@ -31,7 +31,7 @@ dependencies {
 }
 
 ext {
-    archivesBaseName = 'bitcoin-wallet'
+    archivesBaseName = 'btcx-wallet'
 }
 
 android {

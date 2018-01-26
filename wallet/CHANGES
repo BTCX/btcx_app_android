@@ -1,7 +1,3 @@
-v5.45
-
-* Clarify message when fetching/validating the payment request fails.
-
 v5.44
 
 * Add live.blockcypher.com to block explorers and remove blockexplorer.com.

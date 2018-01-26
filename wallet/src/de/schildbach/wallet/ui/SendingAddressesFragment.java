@@ -42,7 +42,7 @@ import de.schildbach.wallet.util.Qr;
 import de.schildbach.wallet.util.Toast;
 import de.schildbach.wallet.util.WalletUtils;
 import de.schildbach.wallet.util.WholeStringBuilder;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -271,33 +271,33 @@ public final class SendingAddressesFragment extends FancyListFragment
                     mode.finish();
                     return true;
 
-                case R.id.sending_addresses_context_edit:
-                    EditAddressBookEntryFragment.edit(getFragmentManager(), getAddress(position));
+					case R.id.sending_addresses_context_edit:
+						EditAddressBookEntryFragment.edit(getFragmentManager(), getAddress(position));
 
-                    mode.finish();
-                    return true;
+						mode.finish();
+						return true;
 
-                case R.id.sending_addresses_context_remove:
-                    handleRemove(getAddress(position));
+					case R.id.sending_addresses_context_remove:
+						handleRemove(getAddress(position));
 
-                    mode.finish();
-                    return true;
+						mode.finish();
+						return true;
 
-                case R.id.sending_addresses_context_show_qr:
-                    handleShowQr(getAddress(position), getLabel(position));
+					case R.id.sending_addresses_context_show_qr:
+						handleShowQr(getAddress(position), getLabel(position));
 
-                    mode.finish();
-                    return true;
+						mode.finish();
+						return true;
 
-                case R.id.sending_addresses_context_copy_to_clipboard:
-                    handleCopyToClipboard(getAddress(position));
+					case R.id.sending_addresses_context_copy_to_clipboard:
+						handleCopyToClipboard(getAddress(position));
 
-                    mode.finish();
-                    return true;
-                }
+						mode.finish();
+						return true;
+				}
 
-                return false;
-            }
+				return false;
+			}
 
             @Override
             public void onDestroyActionMode(final ActionMode mode) {

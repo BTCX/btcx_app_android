@@ -197,6 +197,6 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <include layout="@layout/send_coins_buttons_include" />
+	<include layout="@layout/send_coins_buttons_include" />
 
 </LinearLayout>

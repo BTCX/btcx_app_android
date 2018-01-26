@@ -33,11 +33,12 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import de.schildbach.wallet.R;
 
 import android.os.Build;
 import android.os.Environment;
 import android.text.format.DateUtils;
+
+import se.btcx.wallet.R;
 
 /**
  * @author Andreas Schildbach
@@ -109,9 +110,14 @@ public final class Constants {
     /** Maximum size of backups. Files larger will be rejected. */
     public static final long BACKUP_MAX_CHARS = 10000000;
 
-    /** Currency code for the wallet name resolver. */
-    public static final String WALLET_NAME_CURRENCY_CODE = NETWORK_PARAMETERS.getId()
-            .equals(NetworkParameters.ID_MAINNET) ? "btc" : "tbtc";
+	private static final String BITEASY_API_URL_PROD = "https://api.biteasy.com/v2/btc/mainnet/";
+	private static final String BITEASY_API_URL_TEST = "https://api.biteasy.com/v2/btc/testnet/";
+	/** Base URL for blockchain API. */
+	public static final String BITEASY_API_URL = NETWORK_PARAMETERS.getId().equals(NetworkParameters.ID_MAINNET) ? BITEASY_API_URL_PROD
+			: BITEASY_API_URL_TEST;
+
+	/** Currency code for the wallet name resolver. */
+	public static final String WALLET_NAME_CURRENCY_CODE = NETWORK_PARAMETERS.getId().equals(NetworkParameters.ID_MAINNET) ? "btc" : "tbtc";
 
     /** URL to fetch version alerts from. */
     public static final HttpUrl VERSION_URL = HttpUrl.parse("https://wallet.schildbach.de/version");
@@ -133,9 +139,9 @@ public final class Constants {
     /** Default currency to use if all default mechanisms fail. */
     public static final String DEFAULT_EXCHANGE_CURRENCY = "USD";
 
-    /** Donation address for tip/donate action. */
-    public static final String DONATION_ADDRESS = NETWORK_PARAMETERS.getId().equals(NetworkParameters.ID_MAINNET)
-            ? "1D5QzKDPWypEXrNX9yxPXktNeHA4Qy5t7C" : null;
+	/** Donation address for tip/donate action. */
+	public static final String DONATION_ADDRESS = NETWORK_PARAMETERS.getId().equals(NetworkParameters.ID_MAINNET)
+			? "141TVuPJsecmcWqk4CieDUsUKn4Pi4TFaD" : null;
 
     /** Recipient e-mail address for reports. */
     public static final String REPORT_EMAIL = "bitcoin.wallet.developers@gmail.com";
@@ -160,13 +166,14 @@ public final class Constants {
 
     public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
-    public static final String SOURCE_URL = "https://github.com/bitcoin-wallet/bitcoin-wallet";
-    public static final String BINARY_URL = "https://github.com/bitcoin-wallet/bitcoin-wallet/releases";
-    public static final String MARKET_APP_URL = "market://details?id=%s";
-    public static final String WEBMARKET_APP_URL = "https://play.google.com/store/apps/details?id=%s";
+	public static final String SOURCE_URL = "https://github.com/BTCX/bitcoin-wallet";
+	public static final String BINARY_URL = "https://github.com/BTCX/bitcoin-wallet/releases";
+	public static final String MARKET_APP_URL = "market://details?id=%s";
+	public static final String WEBMARKET_APP_URL = "https://play.google.com/store/apps/details?id=%s";
 
-    public static final int PEER_DISCOVERY_TIMEOUT_MS = 10 * (int) DateUtils.SECOND_IN_MILLIS;
-    public static final int PEER_TIMEOUT_MS = 15 * (int) DateUtils.SECOND_IN_MILLIS;
+	public static final int HTTP_TIMEOUT_MS = 15 * (int) DateUtils.SECOND_IN_MILLIS;
+	public static final int PEER_DISCOVERY_TIMEOUT_MS = 10 * (int) DateUtils.SECOND_IN_MILLIS;
+	public static final int PEER_TIMEOUT_MS = 15 * (int) DateUtils.SECOND_IN_MILLIS;
 
     public static final long LAST_USAGE_THRESHOLD_JUST_MS = DateUtils.HOUR_IN_MILLIS;
     public static final long LAST_USAGE_THRESHOLD_RECENTLY_MS = 2 * DateUtils.DAY_IN_MILLIS;

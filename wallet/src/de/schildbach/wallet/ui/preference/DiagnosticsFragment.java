@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.WalletApplication;
 import de.schildbach.wallet.ui.DialogBuilder;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -75,8 +75,8 @@ public final class DiagnosticsFragment extends PreferenceFragment {
             return true;
         }
 
-        return false;
-    }
+		return false;
+	}
 
     private void handleInitiateReset() {
         final DialogBuilder dialog = new DialogBuilder(activity);

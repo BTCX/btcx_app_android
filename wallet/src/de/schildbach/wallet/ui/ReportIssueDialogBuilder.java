@@ -34,7 +34,7 @@ import com.google.common.base.Charsets;
 
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.util.CrashReporter;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.content.DialogInterface;

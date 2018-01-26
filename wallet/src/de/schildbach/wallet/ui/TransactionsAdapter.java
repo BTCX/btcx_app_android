@@ -43,7 +43,7 @@ import de.schildbach.wallet.data.AddressBookProvider;
 import de.schildbach.wallet.util.CircularProgressView;
 import de.schildbach.wallet.util.Formats;
 import de.schildbach.wallet.util.WalletUtils;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -151,130 +151,159 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setFormat(final MonetaryFormat format) {
         this.format = format.noCode();
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void setWarning(final Warning warning) {
-        this.warning = warning;
+	public void setWarning(final Warning warning)
+	{
+		this.warning = warning;
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void clear() {
-        transactions.clear();
+	public void clear()
+	{
+		transactions.clear();
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void replace(final Transaction tx) {
-        transactions.clear();
-        transactions.add(tx);
+	public void replace(final Transaction tx)
+	{
+		transactions.clear();
+		transactions.add(tx);
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void replace(final Collection<Transaction> transactions) {
-        this.transactions.clear();
-        this.transactions.addAll(transactions);
+	public void replace(final Collection<Transaction> transactions)
+	{
+		this.transactions.clear();
+		this.transactions.addAll(transactions);
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void setSelectedItemId(final long itemId) {
-        selectedItemId = itemId;
+	public void setSelectedItemId(final long itemId)
+	{
+		selectedItemId = itemId;
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void clearCacheAndNotifyDataSetChanged() {
-        transactionCache.clear();
+	public void clearCacheAndNotifyDataSetChanged()
+	{
+		transactionCache.clear();
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public int getItemCount() {
-        int count = transactions.size();
+	@Override
+	public int getItemCount()
+	{
+		int count = transactions.size();
 
-        if (warning != null)
-            count++;
+		if (warning != null)
+			count++;
 
-        return count;
-    }
+		return count;
+	}
 
-    @Override
-    public long getItemId(int position) {
-        if (position == RecyclerView.NO_POSITION)
-            return RecyclerView.NO_ID;
+	@Override
+	public long getItemId(int position)
+	{
+		if (position == RecyclerView.NO_POSITION)
+			return RecyclerView.NO_ID;
 
-        if (warning != null) {
-            if (position == 0)
-                return 0;
-            else
-                position--;
-        }
+		if (warning != null)
+		{
+			if (position == 0)
+				return 0;
+			else
+				position--;
+		}
 
-        return WalletUtils.longHash(transactions.get(position).getHash());
-    }
+		return WalletUtils.longHash(transactions.get(position).getHash());
+	}
 
-    @Override
-    public int getItemViewType(final int position) {
-        if (position == 0 && warning != null)
-            return VIEW_TYPE_WARNING;
-        else
-            return VIEW_TYPE_TRANSACTION;
-    }
+	@Override
+	public int getItemViewType(final int position)
+	{
+		if (position == 0 && warning != null)
+			return VIEW_TYPE_WARNING;
+		else
+			return VIEW_TYPE_TRANSACTION;
+	}
 
-    public RecyclerView.ViewHolder createTransactionViewHolder(final ViewGroup parent) {
-        return createViewHolder(parent, VIEW_TYPE_TRANSACTION);
-    }
+	public RecyclerView.ViewHolder createTransactionViewHolder(final ViewGroup parent)
+	{
+		return createViewHolder(parent, VIEW_TYPE_TRANSACTION);
+	}
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        if (viewType == VIEW_TYPE_TRANSACTION) {
-            if (useCards) {
-                final CardView cardView = (CardView) inflater.inflate(R.layout.transaction_row_card, parent, false);
-                cardView.setPreventCornerOverlap(false);
-                cardView.setUseCompatPadding(true);
-                return new TransactionViewHolder(cardView);
-            } else {
-                return new TransactionViewHolder(inflater.inflate(R.layout.transaction_row, parent, false));
-            }
-        } else if (viewType == VIEW_TYPE_WARNING) {
-            return new WarningViewHolder(inflater.inflate(R.layout.transaction_row_warning, parent, false));
-        } else {
-            throw new IllegalStateException("unknown type: " + viewType);
-        }
-    }
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
+	{
+		if (viewType == VIEW_TYPE_TRANSACTION)
+		{
+			if (useCards)
+			{
+				final CardView cardView = (CardView) inflater.inflate(R.layout.transaction_row_card, parent, false);
+				cardView.setPreventCornerOverlap(false);
+				cardView.setUseCompatPadding(true);
+				return new TransactionViewHolder(cardView);
+			}
+			else
+			{
+				return new TransactionViewHolder(inflater.inflate(R.layout.transaction_row, parent, false));
+			}
+		}
+		else if (viewType == VIEW_TYPE_WARNING)
+		{
+			return new WarningViewHolder(inflater.inflate(R.layout.transaction_row_warning, parent, false));
+		}
+		else
+		{
+			throw new IllegalStateException("unknown type: " + viewType);
+		}
+	}
 
-    @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof TransactionViewHolder) {
-            final TransactionViewHolder transactionHolder = (TransactionViewHolder) holder;
+	@Override
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
+	{
+		if (holder instanceof TransactionViewHolder)
+		{
+			final TransactionViewHolder transactionHolder = (TransactionViewHolder) holder;
 
-            final long itemId = getItemId(position);
-            transactionHolder.itemView.setActivated(itemId == selectedItemId);
+			final long itemId = getItemId(position);
+			transactionHolder.itemView.setActivated(itemId == selectedItemId);
 
-            final Transaction tx = transactions.get(position - (warning != null ? 1 : 0));
-            transactionHolder.bind(tx);
+			final Transaction tx = transactions.get(position - (warning != null ? 1 : 0));
+			transactionHolder.bind(tx);
 
-            transactionHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    setSelectedItemId(getItemId(transactionHolder.getAdapterPosition()));
-                }
-            });
+			transactionHolder.itemView.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(final View v)
+				{
+					setSelectedItemId(getItemId(transactionHolder.getAdapterPosition()));
+				}
+			});
 
-            if (onClickListener != null) {
-                transactionHolder.menuView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        onClickListener.onTransactionMenuClick(v, tx);
-                    }
-                });
-            }
-        } else if (holder instanceof WarningViewHolder) {
-            final WarningViewHolder warningHolder = (WarningViewHolder) holder;
+			if (onClickListener != null)
+			{
+				transactionHolder.menuView.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(final View v)
+					{
+						onClickListener.onTransactionMenuClick(v, tx);
+					}
+				});
+			}
+		}
+		else if (holder instanceof WarningViewHolder)
+		{
+			final WarningViewHolder warningHolder = (WarningViewHolder) holder;
 
             if (warning == Warning.BACKUP) {
                 if (transactions.size() == 1) {
@@ -407,21 +436,25 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 confidenceCircularView.setVisibility(View.VISIBLE);
                 confidenceTextualView.setVisibility(View.GONE);
 
-                confidenceCircularView.setProgress(1);
-                confidenceCircularView.setMaxProgress(1);
-                confidenceCircularView.setSize(confidence.numBroadcastPeers());
-                confidenceCircularView.setMaxSize(maxConnectedPeers / 2); // magic value
-                confidenceCircularView.setColors(colorInsignificant, Color.TRANSPARENT);
-            } else if (confidenceType == ConfidenceType.IN_CONFLICT) {
-                confidenceCircularView.setVisibility(View.GONE);
-                confidenceTextualView.setVisibility(View.VISIBLE);
+				confidenceCircularView.setProgress(1);
+				confidenceCircularView.setMaxProgress(1);
+				confidenceCircularView.setSize(confidence.numBroadcastPeers());
+				confidenceCircularView.setMaxSize(maxConnectedPeers / 2); // magic value
+				confidenceCircularView.setColors(colorInsignificant, Color.TRANSPARENT);
+			}
+			else if (confidenceType == ConfidenceType.IN_CONFLICT)
+			{
+				confidenceCircularView.setVisibility(View.GONE);
+				confidenceTextualView.setVisibility(View.VISIBLE);
 
-                confidenceTextualView.setText(CONFIDENCE_SYMBOL_IN_CONFLICT);
-                confidenceTextualView.setTextColor(colorError);
-                confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal * 0.85f);
-            } else if (confidenceType == ConfidenceType.BUILDING) {
-                confidenceCircularView.setVisibility(View.VISIBLE);
-                confidenceTextualView.setVisibility(View.GONE);
+				confidenceTextualView.setText(CONFIDENCE_SYMBOL_IN_CONFLICT);
+				confidenceTextualView.setTextColor(colorError);
+				confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal * 0.85f);
+			}
+			else if (confidenceType == ConfidenceType.BUILDING)
+			{
+				confidenceCircularView.setVisibility(View.VISIBLE);
+				confidenceTextualView.setVisibility(View.GONE);
 
                 confidenceCircularView.setProgress(confidence.getDepthInBlocks());
                 confidenceCircularView.setMaxProgress(isCoinBase
@@ -433,34 +466,38 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 confidenceCircularView.setVisibility(View.GONE);
                 confidenceTextualView.setVisibility(View.VISIBLE);
 
-                confidenceTextualView.setText(CONFIDENCE_SYMBOL_DEAD);
-                confidenceTextualView.setTextColor(colorError);
-                confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal);
-            } else {
-                confidenceCircularView.setVisibility(View.GONE);
-                confidenceTextualView.setVisibility(View.VISIBLE);
+				confidenceTextualView.setText(CONFIDENCE_SYMBOL_DEAD);
+				confidenceTextualView.setTextColor(colorError);
+				confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal);
+			}
+			else
+			{
+				confidenceCircularView.setVisibility(View.GONE);
+				confidenceTextualView.setVisibility(View.VISIBLE);
 
-                confidenceTextualView.setText(CONFIDENCE_SYMBOL_UNKNOWN);
-                confidenceTextualView.setTextColor(colorInsignificant);
-                confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal);
-            }
+				confidenceTextualView.setText(CONFIDENCE_SYMBOL_UNKNOWN);
+				confidenceTextualView.setTextColor(colorInsignificant);
+				confidenceTextualView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeNormal);
+			}
 
-            // time
-            final Date time = tx.getUpdateTime();
-            if (!itemView.isActivated()) {
-                extendTimeView.setVisibility(View.GONE);
+			// time
+			final Date time = tx.getUpdateTime();
+			if (!itemView.isActivated())
+			{
+				extendTimeView.setVisibility(View.GONE);
 
-                timeView.setVisibility(View.VISIBLE);
-                timeView.setText(DateUtils.getRelativeTimeSpanString(context, time.getTime()));
-                timeView.setTextColor(textColor);
-            } else {
-                extendTimeView.setVisibility(View.VISIBLE);
-                fullTimeView.setText(DateUtils.formatDateTime(context, time.getTime(),
-                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
-                fullTimeView.setTextColor(textColor);
+				timeView.setVisibility(View.VISIBLE);
+				timeView.setText(DateUtils.getRelativeTimeSpanString(context, time.getTime()));
+				timeView.setTextColor(textColor);
+			}
+			else
+			{
+				extendTimeView.setVisibility(View.VISIBLE);
+				fullTimeView.setText(DateUtils.formatDateTime(context, time.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+				fullTimeView.setTextColor(textColor);
 
-                timeView.setVisibility(View.GONE);
-            }
+				timeView.setVisibility(View.GONE);
+			}
 
             // address
             if (isCoinBase) {

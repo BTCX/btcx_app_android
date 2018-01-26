@@ -26,7 +26,7 @@ import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.WalletApplication;
 import de.schildbach.wallet.data.AddressBookProvider;
 import de.schildbach.wallet.util.WalletUtils;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -44,67 +44,71 @@ import android.widget.TextView;
 /**
  * @author Andreas Schildbach
  */
-public final class EditAddressBookEntryFragment extends DialogFragment {
-    private static final String FRAGMENT_TAG = EditAddressBookEntryFragment.class.getName();
+public final class EditAddressBookEntryFragment extends DialogFragment
+{
+	private static final String FRAGMENT_TAG = EditAddressBookEntryFragment.class.getName();
 
-    private static final String KEY_ADDRESS = "address";
-    private static final String KEY_SUGGESTED_ADDRESS_LABEL = "suggested_address_label";
+	private static final String KEY_ADDRESS = "address";
+	private static final String KEY_SUGGESTED_ADDRESS_LABEL = "suggested_address_label";
 
-    public static void edit(final FragmentManager fm, final String address) {
-        edit(fm, Address.fromBase58(Constants.NETWORK_PARAMETERS, address), null);
-    }
+	public static void edit(final FragmentManager fm, final String address)
+	{
+		edit(fm, Address.fromBase58(Constants.NETWORK_PARAMETERS, address), null);
+	}
 
-    public static void edit(final FragmentManager fm, final Address address) {
-        edit(fm, address, null);
-    }
+	public static void edit(final FragmentManager fm, final Address address)
+	{
+		edit(fm, address, null);
+	}
 
-    public static void edit(final FragmentManager fm, final Address address,
-            @Nullable final String suggestedAddressLabel) {
-        final DialogFragment newFragment = EditAddressBookEntryFragment.instance(address, suggestedAddressLabel);
-        newFragment.show(fm, FRAGMENT_TAG);
-    }
+	public static void edit(final FragmentManager fm, final Address address, @Nullable final String suggestedAddressLabel)
+	{
+		final DialogFragment newFragment = EditAddressBookEntryFragment.instance(address, suggestedAddressLabel);
+		newFragment.show(fm, FRAGMENT_TAG);
+	}
 
-    private static EditAddressBookEntryFragment instance(final Address address,
-            @Nullable final String suggestedAddressLabel) {
-        final EditAddressBookEntryFragment fragment = new EditAddressBookEntryFragment();
+	private static EditAddressBookEntryFragment instance(final Address address, @Nullable final String suggestedAddressLabel)
+	{
+		final EditAddressBookEntryFragment fragment = new EditAddressBookEntryFragment();
 
-        final Bundle args = new Bundle();
-        args.putString(KEY_ADDRESS, address.toBase58());
-        args.putString(KEY_SUGGESTED_ADDRESS_LABEL, suggestedAddressLabel);
-        fragment.setArguments(args);
+		final Bundle args = new Bundle();
+		args.putString(KEY_ADDRESS, address.toBase58());
+		args.putString(KEY_SUGGESTED_ADDRESS_LABEL, suggestedAddressLabel);
+		fragment.setArguments(args);
 
-        return fragment;
-    }
+		return fragment;
+	}
 
-    private Activity activity;
-    private Wallet wallet;
-    private ContentResolver contentResolver;
+	private Activity activity;
+	private Wallet wallet;
+	private ContentResolver contentResolver;
 
-    @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
+	@Override
+	public void onAttach(final Activity activity)
+	{
+		super.onAttach(activity);
 
-        this.activity = activity;
-        final WalletApplication application = (WalletApplication) activity.getApplication();
-        this.wallet = application.getWallet();
-        this.contentResolver = activity.getContentResolver();
-    }
+		this.activity = activity;
+		final WalletApplication application = (WalletApplication) activity.getApplication();
+		this.wallet = application.getWallet();
+		this.contentResolver = activity.getContentResolver();
+	}
 
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final Bundle args = getArguments();
-        final Address address = Address.fromBase58(Constants.NETWORK_PARAMETERS, args.getString(KEY_ADDRESS));
-        final String suggestedAddressLabel = args.getString(KEY_SUGGESTED_ADDRESS_LABEL);
+	@Override
+	public Dialog onCreateDialog(final Bundle savedInstanceState)
+	{
+		final Bundle args = getArguments();
+		final Address address = Address.fromBase58(Constants.NETWORK_PARAMETERS, args.getString(KEY_ADDRESS));
+		final String suggestedAddressLabel = args.getString(KEY_SUGGESTED_ADDRESS_LABEL);
 
-        final LayoutInflater inflater = LayoutInflater.from(activity);
+		final LayoutInflater inflater = LayoutInflater.from(activity);
 
-        final Uri uri = AddressBookProvider.contentUri(activity.getPackageName()).buildUpon()
-                .appendPath(address.toBase58()).build();
+		final Uri uri = AddressBookProvider.contentUri(activity.getPackageName()).buildUpon().appendPath(address.toBase58()).build();
 
-        final String label = AddressBookProvider.resolveLabel(activity, address.toBase58());
+		final String label = AddressBookProvider.resolveLabel(activity, address.toBase58());
 
-        final boolean isAdd = label == null;
-        final boolean isOwn = wallet.isPubKeyHashMine(address.getHash160());
+		final boolean isAdd = label == null;
+		final boolean isOwn = wallet.isPubKeyHashMine(address.getHash160());
 
         final DialogBuilder dialog = new DialogBuilder(activity);
 

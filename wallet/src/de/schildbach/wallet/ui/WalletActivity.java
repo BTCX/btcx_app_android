@@ -51,7 +51,7 @@ import de.schildbach.wallet.util.Crypto;
 import de.schildbach.wallet.util.Io;
 import de.schildbach.wallet.util.Nfc;
 import de.schildbach.wallet.util.WalletUtils;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.Manifest;
 import android.app.Activity;
@@ -92,9 +92,9 @@ public final class WalletActivity extends AbstractBindServiceActivity
     private static final int DIALOG_RESTORE_WALLET_PERMISSION = 1;
     private static final int DIALOG_RESTORE_WALLET = 2;
 
-    private WalletApplication application;
-    private Configuration config;
-    private Wallet wallet;
+	private WalletApplication application;
+	private Configuration config;
+	private Wallet wallet;
 
     private Handler handler = new Handler();
 
@@ -102,9 +102,10 @@ public final class WalletActivity extends AbstractBindServiceActivity
     private static final int REQUEST_CODE_BACKUP_WALLET = 1;
     private static final int REQUEST_CODE_RESTORE_WALLET = 2;
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(final Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
 
         application = getWalletApplication();
         config = application.getConfiguration();
@@ -267,59 +268,61 @@ public final class WalletActivity extends AbstractBindServiceActivity
         encryptKeysOption.setTitle(wallet.isEncrypted() ? R.string.wallet_options_encrypt_keys_change
                 : R.string.wallet_options_encrypt_keys_set);
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.wallet_options_request:
-            handleRequestCoins();
-            return true;
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.wallet_options_request:
+				handleRequestCoins();
+				return true;
 
-        case R.id.wallet_options_send:
-            handleSendCoins();
-            return true;
+			case R.id.wallet_options_send:
+				handleSendCoins();
+				return true;
 
-        case R.id.wallet_options_scan:
-            handleScan();
-            return true;
+			case R.id.wallet_options_scan:
+				handleScan();
+				return true;
 
-        case R.id.wallet_options_address_book:
-            AddressBookActivity.start(this);
-            return true;
+			case R.id.wallet_options_address_book:
+				AddressBookActivity.start(this);
+				return true;
 
-        case R.id.wallet_options_exchange_rates:
-            startActivity(new Intent(this, ExchangeRatesActivity.class));
-            return true;
+			case R.id.wallet_options_exchange_rates:
+				startActivity(new Intent(this, ExchangeRatesActivity.class));
+				return true;
 
-        case R.id.wallet_options_sweep_wallet:
-            SweepWalletActivity.start(this);
-            return true;
+			case R.id.wallet_options_sweep_wallet:
+				SweepWalletActivity.start(this);
+				return true;
 
-        case R.id.wallet_options_network_monitor:
-            startActivity(new Intent(this, NetworkMonitorActivity.class));
-            return true;
+			case R.id.wallet_options_network_monitor:
+				startActivity(new Intent(this, NetworkMonitorActivity.class));
+				return true;
 
-        case R.id.wallet_options_restore_wallet:
-            handleRestoreWallet();
-            return true;
+			case R.id.wallet_options_restore_wallet:
+				showDialog(DIALOG_RESTORE_WALLET);
+				return true;
 
-        case R.id.wallet_options_backup_wallet:
-            handleBackupWallet();
-            return true;
+			case R.id.wallet_options_backup_wallet:
+				handleBackupWallet();
+				return true;
 
-        case R.id.wallet_options_encrypt_keys:
-            handleEncryptKeys();
-            return true;
+			case R.id.wallet_options_encrypt_keys:
+				handleEncryptKeys();
+				return true;
 
-        case R.id.wallet_options_preferences:
-            startActivity(new Intent(this, PreferenceActivity.class));
-            return true;
+			case R.id.wallet_options_preferences:
+				startActivity(new Intent(this, PreferenceActivity.class));
+				return true;
 
-        case R.id.wallet_options_safety:
-            HelpDialogFragment.page(getFragmentManager(), R.string.help_safety);
-            return true;
+			case R.id.wallet_options_safety:
+				HelpDialogFragment.page(getFragmentManager(), R.string.help_safety);
+				return true;
 
         case R.id.wallet_options_technical_notes:
             HelpDialogFragment.page(getFragmentManager(), R.string.help_technical_notes);
@@ -440,36 +443,42 @@ public final class WalletActivity extends AbstractBindServiceActivity
         final Spinner fileView = (Spinner) view.findViewById(R.id.import_keys_from_storage_file);
         final EditText passwordView = (EditText) view.findViewById(R.id.import_keys_from_storage_password);
 
-        final DialogBuilder dialog = new DialogBuilder(this);
-        dialog.setTitle(R.string.import_keys_dialog_title);
-        dialog.setView(view);
-        dialog.setPositiveButton(R.string.import_keys_dialog_button_import, new OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                final File file = (File) fileView.getSelectedItem();
-                final String password = passwordView.getText().toString().trim();
-                passwordView.setText(null); // get rid of it asap
+		final DialogBuilder dialog = new DialogBuilder(this);
+		dialog.setTitle(R.string.import_keys_dialog_title);
+		dialog.setView(view);
+		dialog.setPositiveButton(R.string.import_keys_dialog_button_import, new OnClickListener()
+		{
+			@Override
+			public void onClick(final DialogInterface dialog, final int which)
+			{
+				final File file = (File) fileView.getSelectedItem();
+				final String password = passwordView.getText().toString().trim();
+				passwordView.setText(null); // get rid of it asap
 
-                if (WalletUtils.BACKUP_FILE_FILTER.accept(file))
-                    restoreWalletFromProtobuf(file);
-                else if (WalletUtils.KEYS_FILE_FILTER.accept(file))
-                    restorePrivateKeysFromBase58(file);
-                else if (Crypto.OPENSSL_FILE_FILTER.accept(file))
-                    restoreWalletFromEncrypted(file, password);
-            }
-        });
-        dialog.setNegativeButton(R.string.button_cancel, new OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                passwordView.setText(null); // get rid of it asap
-            }
-        });
-        dialog.setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(final DialogInterface dialog) {
-                passwordView.setText(null); // get rid of it asap
-            }
-        });
+				if (WalletUtils.BACKUP_FILE_FILTER.accept(file))
+					restoreWalletFromProtobuf(file);
+				else if (WalletUtils.KEYS_FILE_FILTER.accept(file))
+					restorePrivateKeysFromBase58(file);
+				else if (Crypto.OPENSSL_FILE_FILTER.accept(file))
+					restoreWalletFromEncrypted(file, password);
+			}
+		});
+		dialog.setNegativeButton(R.string.button_cancel, new OnClickListener()
+		{
+			@Override
+			public void onClick(final DialogInterface dialog, final int which)
+			{
+				passwordView.setText(null); // get rid of it asap
+			}
+		});
+		dialog.setOnCancelListener(new OnCancelListener()
+		{
+			@Override
+			public void onCancel(final DialogInterface dialog)
+			{
+				passwordView.setText(null); // get rid of it asap
+			}
+		});
 
         fileView.setAdapter(new FileAdapter(this) {
             @Override

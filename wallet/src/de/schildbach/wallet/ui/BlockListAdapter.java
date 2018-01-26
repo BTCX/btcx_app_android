@@ -36,7 +36,7 @@ import org.bitcoinj.wallet.Wallet;
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.data.AddressBookProvider;
 import de.schildbach.wallet.util.WalletUtils;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -98,44 +98,51 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.Bloc
         this.blocks.clear();
         this.blocks.addAll(blocks);
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void clearTransactions() {
-        transactions = null;
+	public void clearTransactions()
+	{
+		transactions = null;
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public void replaceTransactions(final Set<Transaction> transactions) {
-        this.transactions = transactions;
+	public void replaceTransactions(final Set<Transaction> transactions)
+	{
+		this.transactions = transactions;
 
-        notifyDataSetChanged();
-    }
+		notifyDataSetChanged();
+	}
 
-    public StoredBlock getItem(final int position) {
-        return blocks.get(position);
-    }
+	public StoredBlock getItem(final int position)
+	{
+		return blocks.get(position);
+	}
 
-    @Override
-    public int getItemCount() {
-        return blocks.size();
-    }
+	@Override
+	public int getItemCount()
+	{
+		return blocks.size();
+	}
 
-    @Override
-    public long getItemId(final int position) {
-        return WalletUtils.longHash(blocks.get(position).getHeader().getHash());
-    }
+	@Override
+	public long getItemId(final int position)
+	{
+		return WalletUtils.longHash(blocks.get(position).getHeader().getHash());
+	}
 
-    @Override
-    public BlockViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        return new BlockViewHolder(inflater.inflate(R.layout.block_row, parent, false));
-    }
+	@Override
+	public BlockViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
+	{
+		return new BlockViewHolder(inflater.inflate(R.layout.block_row, parent, false));
+	}
 
-    @Override
-    public void onBindViewHolder(final BlockViewHolder holder, final int position) {
-        final StoredBlock storedBlock = getItem(position);
-        final Block header = storedBlock.getHeader();
+	@Override
+	public void onBindViewHolder(final BlockViewHolder holder, final int position)
+	{
+		final StoredBlock storedBlock = getItem(position);
+		final Block header = storedBlock.getHeader();
 
         holder.miningRewardAdjustmentView
                 .setVisibility(isMiningRewardHalvingPoint(storedBlock) ? View.VISIBLE : View.GONE);

@@ -17,6 +17,8 @@
 
 package de.schildbach.wallet.ui.send;
 
+import org.bitcoinj.core.Coin;
+
 /**
  * @author Andreas Schildbach
  */

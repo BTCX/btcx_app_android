@@ -23,6 +23,7 @@
   <string name="exchange_rates_fragment_balance">balanç</string>
   <string name="exchange_rates_fragment_source">Preu des de %s</string>
   <string name="exchange_rates_options_search">Cercar preu de canvi</string>
+  <string name="exchange_rates_context_set_as_default_title">Desar com a moneda estrangera per defecte</string>
   <string name="wallet_transactions_fragment_empty_text_received">Cap bitcoin rebut fins ara.</string>
   <string name="wallet_transactions_fragment_empty_text_sent">Cap Bitcoin enviat fins ara.</string>
   <string name="wallet_transactions_fragment_empty_text_howto">Com aconseguir bitcoins?\n\nCanvia\'ls per diner tradicional,\nven béns o serveis o bé\nguanyen treballant.</string>
@@ -202,6 +203,7 @@
   <string name="export_keys_dialog_mail_subject">Còpia de seguretat Cartera Bitcoin</string>
   <string name="export_keys_dialog_mail_text">L\'arxiu encriptat adjunt conté les claus privades dels bitcoin i ha de guardar-se sempre de forma segura. No perdis la clau de pas de l\'encriptació.</string>
   <string name="export_keys_dialog_mail_intent_chooser">Desa la cartera utilitzant…</string>
+  <string name="export_keys_dialog_mail_intent_failed">Desament de cartera fallat. </string>
   <string name="import_export_keys_dialog_password">paraula de pas</string>
   <string name="backup_wallet_dialog_password_again">una altra vegada</string>
   <string name="backup_wallet_dialog_password_mismatch">desajust!</string>
@@ -260,6 +262,7 @@
   <string name="preferences_remind_balance_title">Recordatori de balanç</string>
   <string name="preferences_remind_balance_summary">Després de no ser utilitzat durant un parell de setmanes, l\'aplicació us avisarà si encara hi ha monedes a la cartera.</string>
   <string name="preferences_report_issue_title">Avisa d\'un problema</string>
+  <string name="preferences_report_issue_summary">Agafa informació sobre el problema i envia un correu amb el teu informe als desenvolupadors.</string>
   <string name="preferences_initiate_reset_title">Reinicialitza la cadena de blocs</string>
   <string name="preferences_initiate_reset_summary">Restablir la cadena de blocs, les transaccions i el balanç de la cartera. Aquesta repetició prendrà un temps, per tant fes-ho només si saps perquè.</string>
   <string name="preferences_initiate_reset_dialog_message">Vols reiniciar i tornar a reproduir la cadena de blocs?\n\nAixò amagarà temporalment el balanç de la teva cartera i eliminarà les transaccions. Tots dos es recuperaran a mesura que la sincronització de la cadena de blocs avanci. Assegura\'t que tens una connexió a Internet fiable.</string>
@@ -281,6 +284,7 @@
   <string name="report_issue_dialog_collect_application_log">Adjuntar registre d\'aplicació</string>
   <string name="report_issue_dialog_collect_wallet_dump">Adjuntar buidat de dades de cartera.</string>
   <string name="report_issue_dialog_mail_intent_chooser">Enviant report utilitzant…</string>
+  <string name="report_issue_dialog_mail_intent_failed">Enviant un report de fallada.</string>
   <string name="about_title">Quant a</string>
   <string name="about_version_title">Versió</string>
   <string name="about_copyright_title">Drets de còpia</string>

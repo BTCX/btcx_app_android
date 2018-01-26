@@ -26,7 +26,7 @@ import org.bitcoinj.utils.MonetaryFormat;
 import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.util.GenericUtils;
 import de.schildbach.wallet.util.MonetarySpannable;
-import de.schildbach.wallet.R;
+import se.btcx.wallet.R;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -71,124 +71,145 @@ public final class CurrencyAmountView extends FrameLayout {
     private Listener listener;
     private OnClickListener contextButtonClickListener;
 
-    public CurrencyAmountView(final Context context) {
-        super(context);
-        init(context);
-    }
+	public CurrencyAmountView(final Context context)
+	{
+		super(context);
+		init(context);
+	}
 
-    public CurrencyAmountView(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
+	public CurrencyAmountView(final Context context, final AttributeSet attrs)
+	{
+		super(context, attrs);
+		init(context);
+	}
 
-    private void init(final Context context) {
-        final Resources resources = context.getResources();
-        significantColor = resources.getColor(R.color.fg_significant);
-        lessSignificantColor = resources.getColor(R.color.fg_less_significant);
-        errorColor = resources.getColor(R.color.fg_error);
-        deleteButtonDrawable = resources.getDrawable(R.drawable.ic_clear_grey600_24dp);
-    }
+	private void init(final Context context)
+	{
+		final Resources resources = context.getResources();
+		significantColor = resources.getColor(R.color.fg_significant);
+		lessSignificantColor = resources.getColor(R.color.fg_less_significant);
+		errorColor = resources.getColor(R.color.fg_error);
+		deleteButtonDrawable = resources.getDrawable(R.drawable.ic_clear_grey600_24dp);
+	}
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+	@Override
+	protected void onFinishInflate()
+	{
+		super.onFinishInflate();
 
-        final Context context = getContext();
+		final Context context = getContext();
 
-        textView = (TextView) getChildAt(0);
-        textView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        textView.setHintTextColor(lessSignificantColor);
-        textView.setHorizontalFadingEdgeEnabled(true);
-        textView.setSingleLine();
-        setValidateAmount(textView instanceof EditText);
-        textView.addTextChangedListener(textViewListener);
-        textView.setOnFocusChangeListener(textViewListener);
+		textView = (TextView) getChildAt(0);
+		textView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		textView.setHintTextColor(lessSignificantColor);
+		textView.setHorizontalFadingEdgeEnabled(true);
+		textView.setSingleLine();
+		setValidateAmount(textView instanceof EditText);
+		textView.addTextChangedListener(textViewListener);
+		textView.setOnFocusChangeListener(textViewListener);
 
-        contextButton = new View(context) {
-            @Override
-            protected void onMeasure(final int wMeasureSpec, final int hMeasureSpec) {
-                setMeasuredDimension(textView.getCompoundPaddingRight(), textView.getMeasuredHeight());
-            }
-        };
-        final LayoutParams chooseViewParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        chooseViewParams.gravity = Gravity.RIGHT;
-        contextButton.setLayoutParams(chooseViewParams);
-        this.addView(contextButton);
+		contextButton = new View(context)
+		{
+			@Override
+			protected void onMeasure(final int wMeasureSpec, final int hMeasureSpec)
+			{
+				setMeasuredDimension(textView.getCompoundPaddingRight(), textView.getMeasuredHeight());
+			}
+		};
+		final LayoutParams chooseViewParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		chooseViewParams.gravity = Gravity.RIGHT;
+		contextButton.setLayoutParams(chooseViewParams);
+		this.addView(contextButton);
 
-        updateAppearance();
-    }
+		updateAppearance();
+	}
 
-    public void setCurrencySymbol(@Nullable final String currencyCode) {
-        if (MonetaryFormat.CODE_BTC.equals(currencyCode)) {
-            currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_btc);
-            localCurrencyCode = null;
-        } else if (MonetaryFormat.CODE_MBTC.equals(currencyCode)) {
-            currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_mbtc);
-            localCurrencyCode = null;
-        } else if (MonetaryFormat.CODE_UBTC.equals(currencyCode)) {
-            currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_ubtc);
-            localCurrencyCode = null;
-        } else if (currencyCode != null) // fiat
-        {
-            final String currencySymbol = GenericUtils.currencySymbol(currencyCode);
-            final float textSize = textView.getTextSize();
-            final float smallerTextSize = textSize * (20f / 24f);
-            currencySymbolDrawable = new CurrencySymbolDrawable(currencySymbol, smallerTextSize, lessSignificantColor,
-                    textSize * 0.37f);
-            localCurrencyCode = currencyCode;
-        } else {
-            currencySymbolDrawable = null;
-            localCurrencyCode = null;
-        }
+	public void setCurrencySymbol(@Nullable final String currencyCode)
+	{
+		if (MonetaryFormat.CODE_BTC.equals(currencyCode))
+		{
+			currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_btc);
+			localCurrencyCode = null;
+		}
+		else if (MonetaryFormat.CODE_MBTC.equals(currencyCode))
+		{
+			currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_mbtc);
+			localCurrencyCode = null;
+		}
+		else if (MonetaryFormat.CODE_UBTC.equals(currencyCode))
+		{
+			currencySymbolDrawable = getResources().getDrawable(R.drawable.currency_symbol_ubtc);
+			localCurrencyCode = null;
+		}
+		else if (currencyCode != null) // fiat
+		{
+			final String currencySymbol = GenericUtils.currencySymbol(currencyCode);
+			final float textSize = textView.getTextSize();
+			final float smallerTextSize = textSize * (20f / 24f);
+			currencySymbolDrawable = new CurrencySymbolDrawable(currencySymbol, smallerTextSize, lessSignificantColor, textSize * 0.37f);
+			localCurrencyCode = currencyCode;
+		}
+		else
+		{
+			currencySymbolDrawable = null;
+			localCurrencyCode = null;
+		}
 
-        updateAppearance();
-    }
+		updateAppearance();
+	}
 
-    public void setInputFormat(final MonetaryFormat inputFormat) {
-        this.inputFormat = inputFormat.noCode();
-    }
+	public void setInputFormat(final MonetaryFormat inputFormat)
+	{
+		this.inputFormat = inputFormat.noCode();
+	}
 
-    public void setHintFormat(final MonetaryFormat hintFormat) {
-        this.hintFormat = hintFormat.noCode();
-        updateAppearance();
-    }
+	public void setHintFormat(final MonetaryFormat hintFormat)
+	{
+		this.hintFormat = hintFormat.noCode();
+		updateAppearance();
+	}
 
-    public void setHint(@Nullable final Monetary hint) {
-        this.hint = hint;
-        updateAppearance();
-    }
+	public void setHint(@Nullable final Monetary hint)
+	{
+		this.hint = hint;
+		updateAppearance();
+	}
 
-    public void setAmountSigned(final boolean amountSigned) {
-        this.amountSigned = amountSigned;
-    }
+	public void setAmountSigned(final boolean amountSigned)
+	{
+		this.amountSigned = amountSigned;
+	}
 
-    public void setValidateAmount(final boolean validateAmount) {
-        this.validateAmount = validateAmount;
-    }
+	public void setValidateAmount(final boolean validateAmount)
+	{
+		this.validateAmount = validateAmount;
+	}
 
-    public void setContextButton(final int contextButtonResId, final OnClickListener contextButtonClickListener) {
-        this.contextButtonDrawable = getContext().getResources().getDrawable(contextButtonResId);
-        this.contextButtonClickListener = contextButtonClickListener;
+	public void setContextButton(final int contextButtonResId, final OnClickListener contextButtonClickListener)
+	{
+		this.contextButtonDrawable = getContext().getResources().getDrawable(contextButtonResId);
+		this.contextButtonClickListener = contextButtonClickListener;
 
-        updateAppearance();
-    }
+		updateAppearance();
+	}
 
-    public void setListener(final Listener listener) {
-        this.listener = listener;
-    }
+	public void setListener(final Listener listener)
+	{
+		this.listener = listener;
+	}
 
-    @Nullable
-    public Monetary getAmount() {
-        if (!isValidAmount(false))
-            return null;
+	@Nullable
+	public Monetary getAmount()
+	{
+		if (!isValidAmount(false))
+			return null;
 
-        final String amountStr = textView.getText().toString().trim();
-        if (localCurrencyCode == null)
-            return inputFormat.parse(amountStr);
-        else
-            return inputFormat.parseFiat(localCurrencyCode, amountStr);
-    }
+		final String amountStr = textView.getText().toString().trim();
+		if (localCurrencyCode == null)
+			return inputFormat.parse(amountStr);
+		else
+			return inputFormat.parseFiat(localCurrencyCode, amountStr);
+	}
 
     public void setAmount(@Nullable final Monetary amount, final boolean fireListener) {
         if (!fireListener)
@@ -265,12 +286,13 @@ public final class CurrencyAmountView extends FrameLayout {
         }
     };
 
-    private void updateAppearance() {
-        final boolean enabled = textView.isEnabled();
+	private void updateAppearance()
+	{
+		final boolean enabled = textView.isEnabled();
 
-        contextButton.setEnabled(enabled);
+		contextButton.setEnabled(enabled);
 
-        final String amount = textView.getText().toString().trim();
+		final String amount = textView.getText().toString().trim();
 
         if (enabled && !amount.isEmpty()) {
             textView.setCompoundDrawablesWithIntrinsicBounds(currencySymbolDrawable, null, deleteButtonDrawable, null);
