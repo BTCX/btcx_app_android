@@ -3,9 +3,10 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	package="se.btcx.wallet"
 	android:installLocation="internalOnly"
-	android:versionCode="249"
-	android:versionName="4.58.1-btcx" >
-
+	android:versionCode="324"
+	android:versionName="5.44-btcx" >
+    <!--android:versionCode="249"
+    android:versionName="4.58.1-btcx"-->
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="26"
@@ -90,14 +91,15 @@
                 android:resource="@xml/shortcuts" />
         </activity-alias>
 
-        <activity
-            android:name="de.schildbach.wallet.ui.send.SendCoinsActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/send_coins_activity_title"
-            android:theme="@style/My.Theme.ChildActivity"
-            android:windowSoftInputMode="adjustResize" >
-            <intent-filter android:label="@string/send_coins_activity_title" >
-                <action android:name="android.intent.action.VIEW" />
+		<activity
+			android:name="de.schildbach.wallet.ui.send.SendCoinsActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/send_coins_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity"
+			android:windowSoftInputMode="adjustResize" >
+			<intent-filter android:label="@string/send_coins_activity_title" >
+				<action android:name="android.intent.action.VIEW" />
 
                 <data android:scheme="bitcoin" />
 
@@ -123,64 +125,70 @@
 
                 <data android:mimeType="application/bitcoin-paymentrequest" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="de.schildbach.wallet.ui.SendCoinsQrActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="de.schildbach.wallet.ui.RequestCoinsActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/request_coins_activity_title"
-            android:theme="@style/My.Theme.ChildActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="de.schildbach.wallet.ui.AddressBookActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/address_book_activity_title"
-            android:theme="@style/My.Theme.ChildActivity" />
-        <activity
-            android:name="de.schildbach.wallet.ui.ExchangeRatesActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/exchange_rates_activity_title"
-            android:theme="@style/My.Theme.ChildActivity" />
-        <activity
-            android:name="de.schildbach.wallet.ui.NetworkMonitorActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/network_monitor_activity_title"
-            android:theme="@style/My.Theme.ChildActivity" />
-        <activity
-            android:name="de.schildbach.wallet.ui.preference.PreferenceActivity"
-            android:label="@string/preferences_activity_title"
-            android:theme="@style/My.Theme.ChildActivity" />
-        <activity
-            android:name="de.schildbach.wallet.ui.RestoreWalletActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden"
-            android:theme="@style/My.Theme.Dialog" >
-            <intent-filter android:label="@string/import_keys_intent_filter_action" >
-                <action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="de.schildbach.wallet.ui.SendCoinsQrActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		</activity>
+		<activity
+			android:name="de.schildbach.wallet.ui.RequestCoinsActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/request_coins_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity"
+			android:windowSoftInputMode="adjustResize" />
+		<activity
+			android:name="de.schildbach.wallet.ui.AddressBookActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/address_book_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity" />
+		<activity
+			android:name="de.schildbach.wallet.ui.ExchangeRatesActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/exchange_rates_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity" />
+		<activity
+			android:name="de.schildbach.wallet.ui.NetworkMonitorActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/network_monitor_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity" />
+		<activity
+			android:name="de.schildbach.wallet.ui.preference.PreferenceActivity"
+			android:label="@string/preferences_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity" />
+		<activity
+			android:name="de.schildbach.wallet.ui.RestoreWalletActivity"
+			android:configChanges="orientation|keyboard|keyboardHidden"
+			android:theme="@style/My.Theme.Dialog" >
+			<intent-filter android:label="@string/import_keys_intent_filter_action" >
+				<action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="application/x-bitcoin-wallet-backup" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="de.schildbach.wallet.ui.ScanActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden"
-            android:screenOrientation="landscape"
-            android:stateNotNeeded="true"
-            android:theme="@style/My.Theme.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="de.schildbach.wallet.ui.send.SweepWalletActivity"
-            android:configChanges="keyboard|keyboardHidden"
-            android:label="@string/sweep_wallet_activity_title"
-            android:theme="@style/My.Theme.ChildActivity"
-            android:windowSoftInputMode="adjustResize" />
+				<data android:mimeType="application/x-bitcoin-wallet-backup" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="de.schildbach.wallet.ui.ScanActivity"
+			android:configChanges="orientation|keyboard|keyboardHidden"
+			android:screenOrientation="landscape"
+			android:stateNotNeeded="true"
+			android:theme="@style/My.Theme.Fullscreen"
+			android:windowSoftInputMode="stateAlwaysHidden" />
+		<activity
+			android:name="de.schildbach.wallet.ui.send.SweepWalletActivity"
+			android:configChanges="keyboard|keyboardHidden"
+			android:label="@string/sweep_wallet_activity_title"
+			android:screenOrientation="behind"
+			android:theme="@style/My.Theme.ChildActivity"
+			android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="de.schildbach.wallet.data.AddressBookProvider"
@@ -192,7 +200,7 @@
             android:exported="false" />
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="de.schildbach.wallet.file_attachment"
+            android:authorities="se.btcx.wallet.file_attachment"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data

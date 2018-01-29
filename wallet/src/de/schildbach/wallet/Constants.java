@@ -44,7 +44,7 @@ import se.btcx.wallet.R;
  * @author Andreas Schildbach
  */
 public final class Constants {
-    public static final boolean TEST = R.class.getPackage().getName().contains("_test");
+    public static final boolean TEST =  R.class.getPackage().getName().contains("_test");
 
     /** Network this wallet is on (e.g. testnet or mainnet). */
     public static final NetworkParameters NETWORK_PARAMETERS = TEST ? TestNet3Params.get() : MainNetParams.get();
@@ -169,7 +169,8 @@ public final class Constants {
 	public static final String SOURCE_URL = "https://github.com/BTCX/bitcoin-wallet";
 	public static final String BINARY_URL = "https://github.com/BTCX/bitcoin-wallet/releases";
 	public static final String MARKET_APP_URL = "market://details?id=%s";
-	public static final String WEBMARKET_APP_URL = "https://play.google.com/store/apps/details?id=%s";
+	public static final String WEBMARKET_APP_URL =  "https://play.google.com/store/apps/details?id=%s";
+                                                        //"https://play.google.com/store/apps/details?id=%s";
 
 	public static final int HTTP_TIMEOUT_MS = 15 * (int) DateUtils.SECOND_IN_MILLIS;
 	public static final int PEER_DISCOVERY_TIMEOUT_MS = 10 * (int) DateUtils.SECOND_IN_MILLIS;

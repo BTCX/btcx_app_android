@@ -419,12 +419,15 @@ public final class SendCoinsFragment extends Fragment {
 
         @Override
         public void onLoadFinished(final Loader<Cursor> loader, Cursor data) {
-            if (data.getCount() == 0)
+
+            if (data!=null && data.getCount() == 0)
                 data = null;
             if (loader instanceof CursorLoader)
                 receivingAddressBookCursor = data;
             else
                 receivingAddressNameCursor = data;
+
+
             swapTargetCursor();
         }
 

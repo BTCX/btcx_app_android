@@ -40,7 +40,7 @@ android {
 
     lintOptions {
         abortOnError false
-        disable 'MissingTranslation'
+        disable 'MissingTranslation' , 'ExtraTranslation'
     }
 
     defaultConfig {

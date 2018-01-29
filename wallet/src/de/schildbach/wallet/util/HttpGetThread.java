@@ -59,8 +59,8 @@ public abstract class HttpGetThread extends Thread
 		{
 			connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setInstanceFollowRedirects(false);
-			connection.setConnectTimeout(Constants.HTTP_TIMEOUT_MS);
-			connection.setReadTimeout(Constants.HTTP_TIMEOUT_MS);
+			//connection.setConnectTimeout(Constants.HTTP_TIMEOUT_MS);
+			//connection.setReadTimeout(Constants.HTTP_TIMEOUT_MS);
 			connection.setRequestProperty("Accept-Charset", "utf-8");
 			if (userAgent != null)
 				connection.addRequestProperty("User-Agent", userAgent);

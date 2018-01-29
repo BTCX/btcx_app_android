@@ -36,6 +36,7 @@ import android.app.FragmentManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -99,6 +100,7 @@ public class WalletAddressDialogFragment extends DialogFragment {
         final TextView labelView = (TextView) dialog.findViewById(R.id.wallet_address_dialog_label);
         final CharSequence label = WalletUtils.formatHash(addressStr, Constants.ADDRESS_FORMAT_GROUP_SIZE,
                 Constants.ADDRESS_FORMAT_LINE_SIZE);
+        Log.i("WalletAddress","> "+addressStr);
         labelView.setText(label);
         labelButtonView.setVisibility(View.VISIBLE);
         labelButtonView.setOnClickListener(new OnClickListener() {
