@@ -561,6 +561,7 @@ public final class SendCoinsFragment extends Fragment {
         payeeGroup = view.findViewById(R.id.send_coins_payee_group);
 
         payeeNameView = (TextView) view.findViewById(R.id.send_coins_payee_name);
+        payeeNameView.setVisibility(View.GONE);
         payeeVerifiedByView = (TextView) view.findViewById(R.id.send_coins_payee_verified_by);
 
         receivingAddressView = (AutoCompleteTextView) view.findViewById(R.id.send_coins_receiving_address);
@@ -1166,7 +1167,7 @@ public final class SendCoinsFragment extends Fragment {
             getView().setVisibility(View.VISIBLE);
 
             if (paymentIntent.hasPayee()) {
-                payeeNameView.setVisibility(View.VISIBLE);
+                payeeNameView.setVisibility(View.GONE);
                 payeeNameView.setText(paymentIntent.payeeName);
 
                 payeeVerifiedByView.setVisibility(View.VISIBLE);

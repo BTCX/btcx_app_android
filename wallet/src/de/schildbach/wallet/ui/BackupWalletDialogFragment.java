@@ -43,6 +43,7 @@ import de.schildbach.wallet.Constants;
 import de.schildbach.wallet.WalletApplication;
 import de.schildbach.wallet.util.Crypto;
 import de.schildbach.wallet.util.Iso8601Format;
+import de.schildbach.wallet.util.UtilFunctions;
 import se.btcx.wallet.R;
 
 import android.app.Activity;
@@ -94,7 +95,9 @@ public class BackupWalletDialogFragment extends DialogFragment {
         @Override
         public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
             passwordMismatchView.setVisibility(View.INVISIBLE);
-            updateView();
+			//if(s.length()>5){
+            updateView();//}
+
         }
 
         @Override
@@ -217,25 +220,37 @@ public class BackupWalletDialogFragment extends DialogFragment {
 
 		final int passwordLength = passwordView.getText().length();
 		passwordStrengthView.setVisibility(passwordLength > 0 ? View.VISIBLE : View.INVISIBLE);
-		if (passwordLength < 6)
+
+		boolean isstrongPassword = UtilFunctions.checkPasswordStrength(passwordView.getText().toString())  ;
+
+		if (passwordLength < 6 )
 		{
 			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_weak);
 			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_weak));
 		}
-		else if (passwordLength < 8)
+		else if (passwordLength < 8 && !isstrongPassword)
 		{
 			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_fair);
 			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_fair));
 		}
-		else if (passwordLength < 10)
+		else if (passwordLength < 10 && !isstrongPassword)
 		{
 			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_good);
 			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_less_significant));
 		}
-		else
+		else if (passwordLength >= 10 && isstrongPassword)
 		{
 			passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_strong);
 			passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_strong));
+		}
+		else
+		{
+			if(!isstrongPassword){
+				passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_good);
+				passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_less_significant));
+			}else{
+				passwordStrengthView.setText(R.string.encrypt_keys_dialog_password_strength_fair);
+				passwordStrengthView.setTextColor(getResources().getColor(R.color.fg_password_strength_fair));}
 		}
 
 		final boolean hasPassword = !passwordView.getText().toString().trim().isEmpty();
